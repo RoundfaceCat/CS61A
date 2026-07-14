@@ -347,12 +347,31 @@ def sus_strategy(score, opponent_score, threshold=11, num_rolls=6):
 
 
 def final_strategy(score, opponent_score):
-    """Write a brief description of your final strategy.
-
-    *** YOUR DESCRIPTION HERE ***
+    """
+    My final strategy:
+    1. If rolling 0 dice (Boar Brawl) + Sus Fuss wins the game, roll 0.
+    2. If rolling 0 dice gives a high score (>= 8), roll 0.
+    3. If we are leading by a safe margin (> 20 points), play safe and roll 4.
+    4. If we are behind significantly, take more risks and roll 6.
+    5. By default, roll 5 to balance risk and expected value.
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+    boar_points = boar_brawl(score, opponent_score)
+    expected_sus_points = sus_points(score + boar_points) - score
+
+    if score + expected_sus_points >= GOAL:
+        return 0
+
+    if expected_sus_points >= 8:
+        return 0
+
+    if score - opponent_score > 20:
+        return 4
+
+    if opponent_score - score > 20:
+        return 6
+
+    return 5
     # END PROBLEM 12
 
 
